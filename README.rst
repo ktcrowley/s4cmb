@@ -26,6 +26,10 @@ Cosmic Microwave Background experiments. Currently accessible:
 * Differential pointing between the two detectors in a pixel.
 * ... more to come!
 
+In addition the library provides various tools to simulate your own CMB instrument, simulate
+a scanning strategy, scan sky maps to produce Time-Ordered Data (map2tod), and
+project back the time data into sky maps (tod2map).
+
 Requirements
 ===============
 The pipeline is mainly written in python and it has the following dependencies (see requirements.txt):
