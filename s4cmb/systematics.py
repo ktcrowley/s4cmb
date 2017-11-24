@@ -575,32 +575,9 @@ def linear_function_gen(nsamples, mean=1, std=0.05, nbreaks=1, seed=0):
 
 def inject_diffbeam_systematics():
     """
-    Routine to compute and insert differential beam
-    for an input healpix map but flat output map (systematic pipe).
-    You can specify the input file for derivatives (args.derI, fits file):
-        * The fits file should contain the following fields:
-        * T,d_theta(T),d_phi(T),d_phi_theta(T),d_theta_theta(T), d_phi_phi(T)
-        * T should correspond to args.ext_map_fn
-    Output is modified timestreams.
+    Routine to compute and insert differential beam ellipticity or shape.
 
-    Usage:
-       * Use split_deriv() to compute a kernel from sum and difference beam
-       * Use diffbeam_map2ts() to generate a timestream of
-         differential beam leakage from a temperature map
-
-    What it computes:
-       * First use split_kernel() on the sum and
-         difference beam to generate a kernel.
-       * For each parallactic angle in the map, use rotate_derivs()
-         to rotate the kernel.
-       * Compute the raw temperature map derivatives with derivs().
-       * Dot the pixel vector of the current location on all 6 T
-         derivative maps with the kernel.
-       * The result is the expected differential beam
-         leakage from T to pixel difference timestream.
-
-    The expected differential beam leakage can then be used additively for
-    simulations or subtractively (two iteration map making) for cleaning.
+    To come.
     """
     pass
 
