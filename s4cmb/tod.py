@@ -18,7 +18,7 @@ try:
 except ImportError:
     import pickle
 
-from numpy.fft import fft, fftfreq, fftshift
+from numpy.fft import fft, fftfreq, fftshift, rfftfreq
 
 from scipy.signal import firwin
 from scipy import fftpack
@@ -1660,7 +1660,7 @@ class CorrNoiseGenerator(WhiteNoiseGenerator):
                 step = self.corrlength
 
             ## Get the PSD and the frequency range
-            fs = fftfreq(step, 1. / self.sampling_freq)
+            fs = rfftfreq(step, 1. / self.sampling_freq)
             psd = np.zeros_like(fs)
 
             ## Avoid zero frequency
