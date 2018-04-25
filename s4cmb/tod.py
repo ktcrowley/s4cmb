@@ -1664,7 +1664,8 @@ class CorrNoiseGenerator(WhiteNoiseGenerator):
             psd = np.zeros_like(fs)
 
             ## Avoid zero frequency
-            psd[1:] = self.amp_atm * (1 + (fs[1:]/self.f0)**self.alpha)
+            #psd[1:] = self.amp_atm * (1 + (fs[1:]/self.f0)**self.alpha)
+            psd[1:] = self.amp_atm * (fs[1:]/self.f0)**self.alpha
 
             ## Get the TOD from the PSD
             ts_corr[i: i+step] = corr_ts(
@@ -1719,7 +1720,7 @@ def corr_ts(PSD, N, amp, phase):
 
     FFT = A * np.exp(1j*phase[: Nf])
 
-    ts = np.fft.ifft(FFT, n=N)
+    ts = np.fft.irfft(FFT, n=N)
 
     return np.real(ts)
 
