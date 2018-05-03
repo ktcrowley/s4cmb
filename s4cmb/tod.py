@@ -1643,13 +1643,17 @@ class CorrNoiseGenerator(WhiteNoiseGenerator):
 
         ## Correlated part
         state = np.random.RandomState(self.pixel_noise_seeds[ch])
-        # amps = 2 * (-0.5 + state.uniform(size=1))
-        amps = state.uniform(size=1)
+        #amps = 2 * (-0.5 + state.uniform(size=1))
+        #amps = state.uniform(size=1)
+        pix_amp = state.uniform(low=0.8, high=1.2, size=1)
 
         corrdet = int(self.ndetectors / self.nclouds)
         state = np.random.RandomState(
             self.array_noise_seed + ch // corrdet)
-        phases = 2 * np.pi * state.rand(self.ntimesamples)
+        amps = state.randn(self.ntimesamples) + 1j*state.randn(self.ntimesamples)
+        amps *= pix_amp
+        #phases = 2 * np.pi * state.rand(self.ntimesamples)
+        phases = np.ones(self.ntimesamples)
 
         ts_corr = np.zeros(self.ntimesamples)
         for i in range(0, self.ntimesamples, self.corrlength):
@@ -1675,7 +1679,7 @@ class CorrNoiseGenerator(WhiteNoiseGenerator):
                 phase=phases[i: i+step])
 
         ## remove PSD normalisation and add white noise!
-        return ts_corr / np.sqrt(self.sampling_freq) + wnoise
+        return wnoise + ts_corr / np.sqrt(self.sampling_freq)
 
 
 def corr_ts(PSD, N, amp, phase):
@@ -1716,9 +1720,9 @@ def corr_ts(PSD, N, amp, phase):
     Nf = len(PSD)
     PSD[0] = 0.
 
-    A = amp * N * np.sqrt(PSD)
+    A = amp[:Nf] * N * np.sqrt(PSD * 0.5)
 
-    FFT = A * np.exp(1j*phase[: Nf])
+    FFT = A #* np.exp(1j*phase[: Nf])
 
     ts = np.fft.irfft(FFT, n=N)
 
