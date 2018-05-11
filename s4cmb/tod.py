@@ -1650,7 +1650,7 @@ class CorrNoiseGenerator(WhiteNoiseGenerator):
         corrdet = int(self.ndetectors / self.nclouds)
         state = np.random.RandomState(
             self.array_noise_seed + ch // corrdet)
-        amps = state.randn(self.ntimesamples) + 1j*state.randn(self.ntimesamples)
+        amps = state.randn(self.ntimesamples//2 + 1) + 1j*state.randn(self.ntimesamples//2 + 1)
         amps *= pix_amp
         #phases = 2 * np.pi * state.rand(self.ntimesamples)
         phases = np.ones(self.ntimesamples)
@@ -1672,11 +1672,11 @@ class CorrNoiseGenerator(WhiteNoiseGenerator):
             psd[1:] = self.amp_atm * (fs[1:]/self.f0)**self.alpha
 
             ## Get the TOD from the PSD
-            ts_corr[i: i+step] = corr_ts(
+            ts_corr[i:i+step] = corr_ts(
                 PSD=psd,
                 N=step,
-                amp=amps,
-                phase=phases[i: i+step])
+                amp=amps[i//2:(i+step)//2 + 1],
+                phase=phases[i//2:(i+step)//2 + 1])
 
         ## remove PSD normalisation and add white noise!
         return wnoise + ts_corr / np.sqrt(self.sampling_freq)
