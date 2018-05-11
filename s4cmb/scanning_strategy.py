@@ -436,7 +436,7 @@ class ScanningStrategy():
         pb_az_dir = 1.
         upper_az = az_mean + az_throw / 2.
         lower_az = az_mean - az_throw / 2.
-        az_speed = self.sky_speed # / np.cos(el / radToDeg)
+        az_speed = self.sky_speed / np.cos(el / radToDeg)
         running_az = az_mean
 
         ## Initialize arrays
